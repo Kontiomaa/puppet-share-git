@@ -21,4 +21,10 @@ class users {
 		require => User["kontsutest1"],
         }
 
+	file {"/home/kontsutest1/sharedGitFolder":
+		ensure => "directory",
+		group => "kontsutest1",
+		mode => "770",
+		require => User["kontsutest1"],
+	}
 }
