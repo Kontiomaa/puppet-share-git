@@ -25,21 +25,21 @@ class puppet-share-git {
                 require => User["kontsutest1"],
         }
 
-	file {"/home/kontsutest1/sharedGitFolder":
+	file {"/home/kontsutest1/sharedGitFolder.git":
                 ensure => "directory",
                 group => "kontsutest1",
                 mode => "770",
                 require => User["kontsutest1"],
         }
 
-	file {'/home/kontsutest1/sharedGitFolder/script.sh':
+	file {'/home/kontsutest1/sharedGitFolder.git/script.sh':
 		content => template('puppet-share-git/initgit.erb'),
 		mode => 770,
 		require => User["kontsutest1"], 
 	}
 
 	exec {"initgit":
-		command => "/home/kontsutest1/sharedGitFolder/script.sh",
-		require => File["/home/kontsutest1/sharedGitFolder/script.sh"],
+		command => "/home/kontsutest1/sharedGitFolder.git/script.sh",
+		require => File["/home/kontsutest1/sharedGitFolder.git/script.sh"],
 	}
 }
