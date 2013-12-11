@@ -13,6 +13,7 @@ class puppet-share-git {
                 ensure => present,
                 shell => "/bin/bash",
                 managehome => true,
+		#password => '$6$GtbgrQhn$sQYJqWf4fzEmjiVWWZPk0OBpnCj7SbIqDXHxG0BJAD0PjmOOlSTNpJUBAzL30TPhH6JWn31BhR/AEjt0GtRlw0:16050:0:99999:7:::',
                 groups => ["kontsutest1"],
                 require => User["kontsutest1"],
         }
@@ -21,12 +22,14 @@ class puppet-share-git {
                 ensure => present,
                 shell => "/bin/bash",
                 managehome => true,
+		#password => '$6$RrAOjgUM$AZWb4qzE.z9NXuMSDM5au8g0syHCnpAnVyNSwO.9MivH0i45lXaOLLJWGV0my32svULnJg1bRS.qj/q1MvlaI.:16050:0:99999:7:::',
                 groups => ["kontsutest1"],
                 require => User["kontsutest1"],
         }
 
 	file {"/home/kontsutest1/sharedGitFolder.git":
                 ensure => "directory",
+		owner => "kontsutest1",
                 group => "kontsutest1",
                 mode => "770",
                 require => User["kontsutest1"],
@@ -34,11 +37,15 @@ class puppet-share-git {
 
 	file {"/home/kontsutest2/projects":
                 ensure => "directory",
+		owner => "kontsutest2",
+		mode => "770",
                 require => User["kontsutest2"],
         }
 
 	file {"/home/kontsutest3/projects":
                 ensure => "directory",
+		owner => "kontsutest3",
+		mode => "770",
                 require => User["kontsutest3"],
         }
 
