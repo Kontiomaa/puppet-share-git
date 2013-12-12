@@ -31,21 +31,21 @@ class puppet-share-git {
                 ensure => "directory",
 		owner => "kontsutest1",
                 group => "kontsutest1",
-                mode => "770",
+                mode => "777",
                 require => User["kontsutest1"],
         }
 
 	file {"/home/kontsutest2/projects":
                 ensure => "directory",
 		owner => "kontsutest2",
-		mode => "770",
+		mode => "777",
                 require => User["kontsutest2"],
         }
 
 	file {"/home/kontsutest3/projects":
                 ensure => "directory",
 		owner => "kontsutest3",
-		mode => "770",
+		mode => "777",
                 require => User["kontsutest3"],
         }
 
@@ -60,7 +60,29 @@ class puppet-share-git {
         }
 
 	exec {"folderowngroup":
-                command => "/bin/chown .kontsutest1 /home/kontsutest1/sharedGitFolder.git/",
-                require => File["/home/kontsutest1/sharedGitFolder.git/"],
+                command => "/bin/chown kontsutest1.kontsutest1 /home/kontsutest1/sharedGitFolder.git/*",
+                require => Exec["initgit"],
+        }
+
+	#Fix below
+	#exec {"allowpushing":
+	#	command => "/bin/chown kontsutest1.kontsutest1 /home/kontsutest1/sharedGitFolder.git/refs/*",
+	#	require => Exec["folderowngroup"],
+	#}
+
+	file {"/home/kontsutest1/sharedGitFolder.git/refs/heads/":
+		ensure => "directory",
+		owner => "kontsutest1",
+                group => "kontsutest1",
+                mode => "777",
+                require => Exec["initgit"],
+	}
+
+	file {"/home/kontsutest1/sharedGitFolder.git/refs/tags/":
+                ensure => "directory",
+                owner => "kontsutest1",
+                group => "kontsutest1",
+                mode => "777",
+                require => Exec["initgit"],
         }
 }
