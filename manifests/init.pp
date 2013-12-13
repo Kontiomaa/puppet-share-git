@@ -1,9 +1,9 @@
-class puppet-share-git {
+class puppet-share-git ($repo="kontsutestrepo") {
 	package {"git":
 		ensure => "latest"
 	}
 
-	user {"kontsutest1":
+	user {"$repo":
                 ensure => present,
                 shell => "/bin/bash",
                 managehome => true,
@@ -14,8 +14,8 @@ class puppet-share-git {
                 shell => "/bin/bash",
                 managehome => true,
 		#password => '$6$GtbgrQhn$sQYJqWf4fzEmjiVWWZPk0OBpnCj7SbIqDXHxG0BJAD0PjmOOlSTNpJUBAzL30TPhH6JWn31BhR/AEjt0GtRlw0:16050:0:99999:7:::',
-                groups => ["kontsutest1"],
-                require => User["kontsutest1"],
+                groups => ["$repo"],
+                require => User["$repo"],
         }
 
         user {"kontsutest3":
@@ -23,16 +23,16 @@ class puppet-share-git {
                 shell => "/bin/bash",
                 managehome => true,
 		#password => '$6$RrAOjgUM$AZWb4qzE.z9NXuMSDM5au8g0syHCnpAnVyNSwO.9MivH0i45lXaOLLJWGV0my32svULnJg1bRS.qj/q1MvlaI.:16050:0:99999:7:::',
-                groups => ["kontsutest1"],
-                require => User["kontsutest1"],
+                groups => ["$repo"],
+                require => User["$repo"],
         }
 
-	file {"/home/kontsutest1/sharedGitFolder.git":
+	file {"/home/$repo/sharedGitFolder.git":
                 ensure => "directory",
-		owner => "kontsutest1",
-                group => "kontsutest1",
+		owner => "$repo",
+                group => "$repo",
                 mode => "777",
-                require => User["kontsutest1"],
+                require => User["$repo"],
         }
 
 	file {"/home/kontsutest2/projects":
@@ -51,18 +51,18 @@ class puppet-share-git {
 
 	exec {"initgit":
 		command => "/usr/bin/git init --bare --shared",
-		user => "kontsutest1",
-		cwd => "/home/kontsutest1/sharedGitFolder.git/",
-		require => File["/home/kontsutest1/sharedGitFolder.git/"],
+		user => "$repo",
+		cwd => "/home/$repo/sharedGitFolder.git/",
+		require => File["/home/$repo/sharedGitFolder.git/"],
 	}
 
 	exec {"lockuser1":
-                command => "/usr/sbin/usermod --lock kontsutest1",
-                require => User["kontsutest1"],
+                command => "/usr/sbin/usermod --lock $repo",
+                require => User["$repo"],
         }
 
 	exec {"folderowngroup":
-                command => "/bin/chown kontsutest1.kontsutest1 /home/kontsutest1/sharedGitFolder.git/*",
+                command => "/bin/chown $repo.$repo /home/$repo/sharedGitFolder.git/*",
                 require => Exec["initgit"],
         }
 
