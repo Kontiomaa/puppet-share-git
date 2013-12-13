@@ -50,8 +50,9 @@ class puppet-share-git {
         }
 
 	exec {"initgit":
-		command => "/usr/bin/git init --bare --shared /home/kontsutest1/sharedGitFolder.git/",
+		command => "/usr/bin/git init --bare --shared",
 		user => "kontsutest1",
+		cwd => "/home/kontsutest1/sharedGitFolder.git/",
 		require => File["/home/kontsutest1/sharedGitFolder.git/"],
 	}
 
@@ -65,37 +66,17 @@ class puppet-share-git {
                 require => Exec["initgit"],
         }
 
-	#Fix below
-	#exec {"allowpushing":
-	#	command => "/bin/chown kontsutest1.kontsutest1 /home/kontsutest1/sharedGitFolder.git/refs/*",
-	#	require => Exec["folderowngroup"],
-	#}
-
-	#file {"/home/kontsutest1/sharedGitFolder.git/refs/heads/":
-	#	ensure => "directory",
-	#	owner => "kontsutest1",
-        #       group => "kontsutest1",
-        #       mode => "777",
-        #       require => Exec["initgit"],
-	#}
-
-	#file {"/home/kontsutest1/sharedGitFolder.git/refs/tags/":
-        #        ensure => "directory",
-        #        owner => "kontsutest1",
-        #        group => "kontsutest1",
-        #        mode => "777",
-        #        require => Exec["initgit"],
-        #}
-
 	exec {"clone1":
-		command => "/usr/bin/git clone /home/kontsutest1/sharedGitFolder.git/ /home/kontsutest2/projects/puppet-share-git/",
+		command => "/usr/bin/git clone /home/kontsutest1/sharedGitFolder.git/",
 		user => "kontsutest2",
+		cwd => "/home/kontsutest2/projects/",
 		require => [User["kontsutest2"], Exec["initgit"]],
 	}
 
 	exec {"clone2":
-		command => "/usr/bin/git clone /home/kontsutest1/sharedGitFolder.git/ /home/kontsutest3/projects/puppet-share-git/",
+		command => "/usr/bin/git clone /home/kontsutest1/sharedGitFolder.git/",
 		user => "kontsutest3",
+		cwd => "/home/kontsutest3/projects/",
 		require => [User["kontsutest3"], Exec["initgit"]],
 	}
 }
