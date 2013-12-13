@@ -67,14 +67,14 @@ class puppet-share-git ($repo="kontsutestrepo") {
         }
 
 	exec {"clone1":
-		command => "/usr/bin/git clone /home/kontsutest1/sharedGitFolder.git/",
+		command => "/usr/bin/git clone /home/$repo/sharedGitFolder.git/",
 		user => "kontsutest2",
 		cwd => "/home/kontsutest2/projects/",
 		require => [User["kontsutest2"], Exec["initgit"]],
 	}
 
 	exec {"clone2":
-		command => "/usr/bin/git clone /home/kontsutest1/sharedGitFolder.git/",
+		command => "/usr/bin/git clone /home/$repo/sharedGitFolder.git/",
 		user => "kontsutest3",
 		cwd => "/home/kontsutest3/projects/",
 		require => [User["kontsutest3"], Exec["initgit"]],
