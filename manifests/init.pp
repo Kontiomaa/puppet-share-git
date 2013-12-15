@@ -31,21 +31,21 @@ class puppet-share-git ($repo="kontsutestrepo") {
                 ensure => "directory",
 		owner => "$repo",
                 group => "$repo",
-                mode => "2777",
+                mode => "2775",
                 require => User["$repo"],
         }
 
 	file {"/home/kontsutest2/projects":
                 ensure => "directory",
 		owner => "kontsutest2",
-		mode => "777",
+		mode => "775",
                 require => User["kontsutest2"],
         }
 
 	file {"/home/kontsutest3/projects":
                 ensure => "directory",
 		owner => "kontsutest3",
-		mode => "777",
+		mode => "775",
                 require => User["kontsutest3"],
         }
 
