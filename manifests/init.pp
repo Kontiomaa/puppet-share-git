@@ -13,7 +13,7 @@ class puppet-share-git ($repo="kontsutestrepo") {
                 ensure => present,
                 shell => "/bin/bash",
                 managehome => true,
-		#password => '$6$GtbgrQhn$sQYJqWf4fzEmjiVWWZPk0OBpnCj7SbIqDXHxG0BJAD0PjmOOlSTNpJUBAzL30TPhH6JWn31BhR/AEjt0GtRlw0:16050:0:99999:7:::',
+		password => '$6$RUyDZoIS$HO7pDXTn5.JqZqluk.6uujzMohQep/QpeqIEslo5XhL44P8C9hwyqeJk0MRfzcmZlCvuVqkOYFSxwsUUvvMo.1',
                 groups => ["$repo"],
                 require => User["$repo"],
         }
@@ -22,7 +22,7 @@ class puppet-share-git ($repo="kontsutestrepo") {
                 ensure => present,
                 shell => "/bin/bash",
                 managehome => true,
-		#password => '$6$RrAOjgUM$AZWb4qzE.z9NXuMSDM5au8g0syHCnpAnVyNSwO.9MivH0i45lXaOLLJWGV0my32svULnJg1bRS.qj/q1MvlaI.:16050:0:99999:7:::',
+		password => '$6$NriBfv/A$rzalsJ5pSqClDr1PBAQF0gzNstGcxn60yEkKw2tLiu4tqcd/G7j992XXe58GgYrIuOQHX9eO4bsNhsy2p42pq.',
                 groups => ["$repo"],
                 require => User["$repo"],
         }
@@ -31,7 +31,7 @@ class puppet-share-git ($repo="kontsutestrepo") {
                 ensure => "directory",
 		owner => "$repo",
                 group => "$repo",
-                mode => "777",
+                mode => "2777",
                 require => User["$repo"],
         }
 
@@ -70,6 +70,7 @@ class puppet-share-git ($repo="kontsutestrepo") {
 		command => "/usr/bin/git clone /home/$repo/sharedGitFolder.git/",
 		user => "kontsutest2",
 		cwd => "/home/kontsutest2/projects/",
+		creates => "/home/kontsutest2/projects/sharedGitFolder/.git/",
 		require => [User["kontsutest2"], Exec["initgit"]],
 	}
 
@@ -77,6 +78,7 @@ class puppet-share-git ($repo="kontsutestrepo") {
 		command => "/usr/bin/git clone /home/$repo/sharedGitFolder.git/",
 		user => "kontsutest3",
 		cwd => "/home/kontsutest3/projects/",
+		creates => "/home/kontsutest3/projects/sharedGitFolder/.git/",
 		require => [User["kontsutest3"], Exec["initgit"]],
 	}
 }
